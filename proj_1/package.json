@@ -1,0 +1,26 @@
+{
+  "name": "proj_1",
+  "version": "1.0.0-SNAPSHOT",
+  "description": "MS with NodeJS project 1",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/STG-247/ms_with_node.git"
+  },
+  "keywords": [
+    "nodejs",
+    "microservice",
+    "javascript",
+    "seneca",
+    "pm2"
+  ],
+  "author": "Shashwat Kaundinya",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/STG-247/ms_with_node/issues"
+  },
+  "homepage": "https://github.com/STG-247/ms_with_node#readme"
+}
