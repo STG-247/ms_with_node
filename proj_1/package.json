@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/STG-247/ms_with_node/issues"
   },
-  "homepage": "https://github.com/STG-247/ms_with_node#readme"
+  "homepage": "https://github.com/STG-247/ms_with_node#readme",
+  "dependencies": {
+    "seneca": "^3.30.0"
+  }
 }
