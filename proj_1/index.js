@@ -21,12 +21,7 @@ srv.add({ cmd: 'wordcount' }, (msg, respond) => {
 
 srv.add({ cmd: 'wordcount', skipShort: true }, (msg, respond) => {
     const words = msg.phrase.split(' ');
-    let validWords = 0;
-    for (let i = 0; i < words.length; i++) {
-        if (words[i].length > 3) {
-            validWords++;
-        }
-    }
+    const validWords = words.filter(a => a.length > 3).length;
     respond(null, { words: validWords });
 });
 
