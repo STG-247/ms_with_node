@@ -1,11 +1,19 @@
 const seneca = require('seneca');
 const srv = seneca({ log: 'silent' });
 
-srv.add({ role: 'math', cmd: 'sum' }, (msg,
-    respond) => {
+srv.add({ role: 'math', cmd: 'sum' }, (msg, respond) => {
     const sum = msg.left + msg.right;
     respond(null, { answer: sum });
 });
+
+srv.add({ role: 'math', cmd: 'sum', integer: true }, (msg, respond) => {
+    srv.act({
+        role: 'math', cmd: 'sum', left:
+            Math.floor(msg.left), right:
+            Math.floor(msg.right)
+    }, respond);
+});
+
 srv.add({ role: 'math', cmd: 'product' }, (msg, respond) => {
     const product = msg.left * msg.right;
     respond(null, { answer: product });
@@ -53,3 +61,4 @@ srv.act({ cmd: 'wordcount', skipShort: true, phrase: 'Hello world this is Seneca
     console.log(response);
 });
 
+srv.act({role: 'math', cmd: 'sum', left: 1.5, right: 2.5, integer: true}, console.log);
