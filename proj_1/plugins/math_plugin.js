@@ -12,30 +12,38 @@ function math(options) {
     this.add('init:math', init);
 
     function init(msg, respond) {
-        fs.open(options.logfile, 'a', function (err, fd) {
-            if (err) return respond(err)
-            log = make_log(fd)
+        console.log("############################");
+        console.log(msg);
+        console.log("$$$$$$$$$$$$$$$$$$$$$$$$");
+        if (options.logfile)
+            fs.open(options.logfile, 'a', (err, fd) => {
+                if (err) return respond(err)
+                log = make_log(fd)
+                respond();
+            });
+        else
             respond();
-        });
     }
 
     function sum(msg, respond) {
         const out = { answer: msg.left + msg.right };
-        log('sum ' + msg.left + '+' + msg.right + '=' + out.answer + '\n');
+        if (!!log)
+            log('sum ' + msg.left + '+' + msg.right + '=' + out.answer + '\n');
         respond(null, out);
     }
 
     function product(msg, respond) {
         const out = { answer: msg.left * msg.right };
-        log('product ' + msg.left + '*' + msg.right + '=' + out.answer + '\n');
+        if (!!log)
+            log('product ' + msg.left + '*' + msg.right + '=' + out.answer + '\n');
         respond(null, out);
     }
 
     function make_log(fd) {
-        return function (entry) {
-            fs.write(fd, new Date().toISOString() + ' ' + entry, null, 'utf8', function (err) {
+        return (entry) => {
+            fs.write(fd, new Date().toISOString() + ' ' + entry, null, 'utf8', (err) => {
                 if (err) return console.log(err)
-                fs.fsync(fd, function (err) {
+                fs.fsync(fd, (err) => {
                     if (err) return console.log(err)
                 });
             });
