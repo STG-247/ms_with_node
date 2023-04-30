@@ -25,7 +25,7 @@ seneca
 
 
 
-app.use(srv.export('web'));
+app.use(seneca.export('web')); // Seneca being used as middleware for Express 
 
 app.listen(3900);
 
