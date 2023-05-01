@@ -1,33 +1,34 @@
+// loading standard packages
 const seneca = require("seneca")();
 const SenecaWeb = require("seneca-web");
 const Express = require("express");
 const Router = Express.Router;
-const context = new Router()
+const app = Express();
+const context = new Router();
+const bodyParser = require('body-parser');
+const senecaExpressAdaptor = require('seneca-web-adapter-express');
 
+// loading custom plugins
+const api_plugin = require('./plugins/api_plugin.js');
+
+/// add router and use express adaptor
 const senecaWebConfig = {
     context: context,
-    adapter: require('seneca-web-adapter-express'),
+    adapter: senecaExpressAdaptor,
     options: { parseBody: false }  // we will use body-parser middleware
 };
-const app = Express()
-            .use(require('body-parse').json())
-            .use(context)
-            .listen(process.env.EXPRESS_PORT||3400);
 
+app.use(bodyParser.json())
+    .use(context);
 
 seneca
 .use(SenecaWeb, senecaWebConfig)
-.use('api_plugin')
-.client({type: 'tcp', pin: {role: math}});
-
+.use(api_plugin)
+.client({type: 'tcp', pin: {role: 'api_stg'}});
 
 //https://senecajs.org/getting-started/#writing-microservices
 
-
-
-app.use(seneca.export('web')); // Seneca being used as middleware for Express 
-
-app.listen(3900);
+app.listen(process.env.EXPRESS_PORT||3900);
 
 
 

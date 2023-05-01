@@ -1,37 +1,36 @@
-function api(options) {
+module.exports = function api_plugin(options) {
 
     const valid_ops = { sum: 'sum', product: 'product' }
 
     this.add({ role: "api", path: "calculate" }, calc);
-    this.add({ init: "api" }, init);
+    this.add({ init: 'api_plugin' }, init);
 
 
     function calc(msg, respond) {
         const operation = msg.args.params.operation
         const left = msg.args.query.left
         const right = msg.args.query.right
-        this.act({ role: "math" },
+        this.use(require('./maths.js'))
+        .act({ role: "maths" },
             {
                 cmd: valid_ops[operation],
                 left: left,
                 right: right,
-            }, respond)
+            }, respond);
     }
 
     function init(msg, respond) {
-        this.act({ role: "web" }, {
-            routes: {
+        console.log(JSON.stringify(msg, null, 4));
+        this.act(
+            { role: 'web' },
+            { routes: {
                 prefix: '/api',
                 pin: 'role:api,path:*',
-                map: {
-                    calculate: { GET: true, suffix: '/:operation' }
-                }
+                map: { calculate: { GET: true, suffix: '/:operation' } }
             }
-        }, respond)
+        }, respond);
     }
 
 
 
 }
-
-module.exports = { api_plugin: api };

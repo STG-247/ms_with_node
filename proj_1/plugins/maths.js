@@ -1,15 +1,15 @@
 const fs = require('fs')
 
 
-function math(options) {
+module.exports = function maths(options) {
 
     var log;
 
     // this is the special initialization pattern
 
-    this.add({ role: 'math', cmd: 'sum' }, sum);
-    this.add({ role: 'math', cmd: 'product' }, product);
-    this.add('init:math', init);
+    this.add({ role: 'maths', cmd: 'sum' }, sum);
+    this.add({ role: 'maths', cmd: 'product' }, product);
+    this.add('init:maths', init);
 
     function init(msg, respond) {
         console.log("############################");
@@ -17,8 +17,8 @@ function math(options) {
         console.log("$$$$$$$$$$$$$$$$$$$$$$$$");
         if (options.logfile)
             fs.open(options.logfile, 'a', (err, fd) => {
-                if (err) return respond(err)
-                log = make_log(fd)
+                if (err) return respond(err);
+                log = make_log(fd);
                 respond();
             });
         else
@@ -50,6 +50,11 @@ function math(options) {
         };
     }
 
-}
+    
+    this.wrap('role:maths', function (msg, respond) {
+        msg.left  = Number(msg.left).valueOf()
+        msg.right = Number(msg.right).valueOf()
+        this.prior(msg, respond);
+      });
 
-module.exports = { sen_math: math };
+}
